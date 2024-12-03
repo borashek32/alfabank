@@ -9,12 +9,12 @@ function App() {
   return (
     <div className="App">
       <Provider store={store}>
-      <Router>
-      <Routes>
-        <Route path="/" element={<CharactersList />} />
-        <Route path="/character/:id" element={<CharacterDetails />} />
-      </Routes>
-    </Router>
+        <Router>
+          <Routes>
+            <Route path="/" element={<CharactersList />} />
+            <Route path="/character/:id" element={<CharacterDetails />} />
+          </Routes>
+        </Router>
       </Provider>
     </div>
   );

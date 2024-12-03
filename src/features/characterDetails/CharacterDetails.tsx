@@ -1,34 +1,40 @@
-import { useNavigate, useParams } from 'react-router-dom';
-import styles from './CharacterDetails.module.css';
-import { useGetCharacterQuery } from 'features/characters/api/rickMorty.api';
 import { useEffect } from 'react';
+import { NavLink, useParams } from 'react-router-dom';
+import { useGetCharacterQuery } from 'features/characters/api/rickMorty.api';
 import { setCharacter } from 'features/characters/characters.slice';
+import { selectCharacterById } from 'features/characters/characters.selector';
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
 import { useAppSelector } from 'common/hooks/useAppSelector';
-import { selectCharacter } from 'features/characters/characters.selector';
+import styles from './CharacterDetails.module.css';
 
 export const CharacterDetails = () => {
-  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
-  const { data, isLoading, error } = useGetCharacterQuery(Number(id));
-  const character = useAppSelector(selectCharacter);
 
-  const goBackHandler = () => {
-    navigate(-1);
-  };
+  // Попробуем найти персонажа в состоянии Redux
+  const character = useAppSelector((state) => selectCharacterById(state, Number(id)));
+
+  // Если персонажа нет в Redux, загружаем его из API
+  const { data, isLoading, error } = useGetCharacterQuery(Number(id), {
+    skip: !!character, // Пропускаем запрос, если персонаж уже есть
+  });
 
   useEffect(() => {
-    if (data) {
+    if (!character && data) {
       dispatch(setCharacter(data));
     }
-  }, [data, dispatch]);
+  }, [character, data, dispatch]);
+
+  if (isLoading) return <p>Loading...</p>;
+  if (error) return <p>Error loading character</p>;
   
   return (
     <div className={styles.characterWrapper}>
-      <button onClick={goBackHandler} className={styles.backButton}>
-        ← Back to Characters
-      </button>
+      <NavLink to={'/'}>
+        <button className={styles.backButton}>
+          ← Back to Characters
+        </button>
+      </NavLink>
       {isLoading && <p>Loading...</p>}
       {error && <p>Character not found</p>}
       {character ? (

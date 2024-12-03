@@ -11,15 +11,15 @@ export const store = configureStore({
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(
     rickMortyApi.middleware,
   ),
-})
+});
 
-setupListeners(store.dispatch)
+setupListeners(store.dispatch);
 
-export type AppDispatch = typeof store.dispatch
-export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch;
+export type RootState = ReturnType<typeof store.getState>;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,
   RootState,
   unknown,
   Action<string>
->
+>;

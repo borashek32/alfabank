@@ -5,7 +5,7 @@ import bin from './../../../../common/assets/img/bin.svg';
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
 import { CharacterAppType } from 'features/characters/characters.types';
 import { toggleLike } from 'features/characters/characters.slice';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 type Props = Pick<CharacterAppType, "id" | "name" | "image" | "location" | "status" | "species" | "likes" | "description"> & {
   removeCharacter: (id: number) => void
@@ -23,29 +23,24 @@ export const CharacterCard = ({
   removeCharacter,
  }: Props) => {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
 
   const removeCharacterHandler = (event: React.MouseEvent) => {
-    event.stopPropagation();
     removeCharacter(id);
   }
 
   const toggleLikeHandler = (event: React.MouseEvent) => {
-    event.stopPropagation();
     dispatch(toggleLike(id));
   }
 
-  const openDetailsHandler = () => {
-    navigate(`/character/${id}`);
-  };
-
   return (
-    <div className={styles.cardWrapper} onClick={openDetailsHandler}>
-      <img
-        src={image}
-        className={styles.cardImage}
-        alt="Character"
-      />
+    <div className={styles.cardWrapper}>
+      <NavLink to={`/character/${id}`}>
+        <img
+          src={image}
+          className={styles.cardImage}
+          alt="Character"
+        />
+      </NavLink>
       {name && 
         <div className={styles.desc}>
           {name && 
