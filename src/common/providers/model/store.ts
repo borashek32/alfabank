@@ -1,3 +1,4 @@
+import { charactersReducer } from './../../../features/characters/characters.slice';
 import { Action, ThunkAction, configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { rickMortyApi } from '../../../features/characters/api/rickMorty.api';
@@ -5,6 +6,7 @@ import { rickMortyApi } from '../../../features/characters/api/rickMorty.api';
 export const store = configureStore({
   reducer: {
     [rickMortyApi.reducerPath]: rickMortyApi.reducer,
+    characters: charactersReducer,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(
     rickMortyApi.middleware,

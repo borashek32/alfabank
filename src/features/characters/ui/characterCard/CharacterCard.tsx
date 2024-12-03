@@ -1,7 +1,15 @@
-import { CharacterType } from './../../api/rickMorty.types';
 import styles from './CharacterCard.module.css';
+import likeLight from './../../../../common/assets/img/like-light.svg';
+import likeDark from './../../../../common/assets/img/like-dark.svg';
+import bin from './../../../../common/assets/img/bin.svg';
+import { useAppDispatch } from 'common/hooks/useAppDispatch';
+import { CharacterAppType } from 'features/characters/characters.types';
+import { toggleLike } from 'features/characters/characters.slice';
+import { useNavigate } from 'react-router-dom';
 
-type Props = Pick<CharacterType, "id" | "name" | "image" | "location" | "status" | "species">
+type Props = Pick<CharacterAppType, "id" | "name" | "image" | "location" | "status" | "species" | "likes" | "description"> & {
+  removeCharacter: (id: number) => void
+}
 
 export const CharacterCard = ({ 
   id,
@@ -10,10 +18,29 @@ export const CharacterCard = ({
   location,
   status,
   species,
+  likes,
+  description,
+  removeCharacter,
  }: Props) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const removeCharacterHandler = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    removeCharacter(id);
+  }
+
+  const toggleLikeHandler = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    dispatch(toggleLike(id));
+  }
+
+  const openDetailsHandler = () => {
+    navigate(`/character/${id}`);
+  };
 
   return (
-    <div className={styles.cardWrapper}>
+    <div className={styles.cardWrapper} onClick={openDetailsHandler}>
       <img
         src={image}
         className={styles.cardImage}
@@ -24,13 +51,17 @@ export const CharacterCard = ({
           {name && 
             <div className={styles.textWrapper}>
               <p className={styles.descName}>Name:</p>
-              <p className={styles.descText}>{name}</p>
+              <p className={styles.descText}>
+              {name.length > 20 ? `${location.name.substring(0, 9)}...` : name}
+              </p>
             </div>
           }
           {location &&
             <div className={styles.textWrapper}>
               <p className={styles.descName}>Location:</p>
-              <p className={styles.descText}>{location.name}</p>
+              <p className={styles.descText}>
+                {location.name.length > 10 ? `${location.name.substring(0, 9)}...` : location.name}
+              </p>
             </div>
           }
           {status && 
@@ -45,6 +76,19 @@ export const CharacterCard = ({
               <p className={styles.descText}>{species}</p>
             </div>
           }
+          {description && 
+            <div className={styles.textWrapper}>
+              <p className={styles.descName}>Description:</p>
+              <p className={styles.descText}>{description.substring(0, 15)}...</p>
+            </div>
+          }
+          <div className={styles.iconsWrapper}>
+            <img src={bin} alt="bin" onClick={removeCharacterHandler} />
+            {likes
+              ? <img src={likeDark} alt='like' onClick={toggleLikeHandler} />
+              : <img src={likeLight} alt='like' onClick={toggleLikeHandler} />
+            }
+          </div>
         </div>
       }
     </div>
