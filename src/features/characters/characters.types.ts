@@ -2,16 +2,16 @@ export type CharacterAppType = {
   id: number
   name: string
   status: string
-  species: string
+  species?: string
   location: {
     name: string
-    url: string
+    url?: string
   }
-  image: string
+  image?: string
   episode?: [
     string
   ]
-  likes: number
+  likes?: number
   description: string
 }
 

@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { CharacterAppType, FilterAppType } from './characters.types';
-import { CharacterType } from './api/rickMorty.types';
-import { transformToCharacterAppType } from 'common/dto/transformToCharacterAppType';
+import { CharacterAppType, FilterAppType } from 'features/Characters/characters.types';
 
 interface CharacterState {
-  originalCharacters: CharacterAppType[]; // Оригинальный список персонажей
-  characters: CharacterAppType[]; // Отфильтрованный список
-  filter: FilterAppType; // Текущий фильтр
-  character: CharacterAppType | null; // Текущий выбранный персонаж
+  originalCharacters: CharacterAppType[]; // all characters from rickAndMortyApi
+  characters: CharacterAppType[];         // filtered characters
+  filter: FilterAppType;
+  character: CharacterAppType | null;
 }
 
 const initialState: CharacterState = {
@@ -21,44 +19,45 @@ const charactersSlice = createSlice({
   name: 'characters',
   initialState,
   reducers: {
-    // Устанавливаем персонажей при загрузке данных из API
-    setCharacters(state, action: PayloadAction<CharacterType[]>) {
-      state.originalCharacters = action.payload.map(transformToCharacterAppType); // Преобразуем данные
-      state.characters = state.filter === 'favourites' 
-        ? state.originalCharacters.filter(character => character.likes === 1)
+    setCharacters(state, action: PayloadAction<CharacterAppType[]>) {
+      state.originalCharacters = action.payload;
+      state.characters = state.filter === 'favourites'
+        ? state.originalCharacters.filter((character) => character.likes === 1)
         : state.originalCharacters;
     },
-
-    // Удаляем персонажа из обоих списков
     removeCharacter(state, action: PayloadAction<number>) {
-      state.originalCharacters = state.originalCharacters.filter(character => character.id !== action.payload);
-      state.characters = state.characters.filter(character => character.id !== action.payload);
+      state.originalCharacters = state.originalCharacters.filter(
+        (character) => character.id !== action.payload
+      );
+      state.characters = state.characters.filter(
+        (character) => character.id !== action.payload
+      );
     },
-
-    // Переключение лайков персонажа
     toggleLike(state, action: PayloadAction<number>) {
-      const character = state.originalCharacters.find(character => character.id === action.payload);
+      const character = state.originalCharacters.find((character) => character.id === action.payload);
       if (character) {
-        character.likes = character.likes === 0 ? 1 : 0; // Меняем состояние лайка
+        character.likes = character.likes === 0 ? 1 : 0;
       }
-
-      // Применяем текущий фильтр после изменения лайка
-      state.characters = state.filter === 'favourites' 
-        ? state.originalCharacters.filter(character => character.likes === 1)
+      state.characters = state.filter === 'favourites'
+        ? state.originalCharacters.filter((character) => character.likes === 1)
         : state.originalCharacters;
     },
-
-    // Устанавливаем фильтр и применяем его
     setFilter(state, action: PayloadAction<FilterAppType>) {
       state.filter = action.payload;
       state.characters = action.payload === 'favourites'
-        ? state.originalCharacters.filter(character => character.likes === 1)
+        ? state.originalCharacters.filter((character) => character.likes === 1)
         : state.originalCharacters;
     },
-
-    // Устанавливаем текущего выбранного персонажа
-    setCharacter(state, action: PayloadAction<CharacterType>) {
-      state.character = transformToCharacterAppType(action.payload);
+    setCharacter(state, action: PayloadAction<number>) {
+      state.character = state.originalCharacters.find(
+        (character) => character.id === action.payload
+      ) || null;
+    },
+    addCharacter(state, action: PayloadAction<CharacterAppType>) {
+      state.originalCharacters.unshift(action.payload);
+      state.characters = state.filter === 'favourites'
+        ? state.originalCharacters.filter((character) => character.likes === 1)
+        : state.originalCharacters;
     },
   },
 });
@@ -69,6 +68,7 @@ export const {
   toggleLike,
   setFilter,
   setCharacter,
+  addCharacter,
 } = charactersSlice.actions;
 
 export const charactersReducer = charactersSlice.reducer;

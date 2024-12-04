@@ -1,6 +1,6 @@
 import { generateRandomDescription } from "common/utils/generateRandomDescription";
-import { CharacterType } from "features/characters/api/rickMorty.types";
-import { CharacterAppType } from "features/characters/characters.types";
+import { CharacterType } from "features/Characters/api/rickMorty.types";
+import { CharacterAppType } from "features/Characters/characters.types";
 
 export const transformToCharacterAppType = (character: CharacterType): CharacterAppType => ({
   id: character.id,

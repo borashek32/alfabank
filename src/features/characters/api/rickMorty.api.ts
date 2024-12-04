@@ -1,37 +1,26 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { CharacterType, RickMortyDataType } from 'features/characters/api/rickMorty.types';
+import { transformToCharacterAppType } from 'common/dto/transformToCharacterAppType';
+import { CharacterAppType } from '../characters.types';
+import { RickMortyDataType } from 'features/Characters/api/rickMorty.types';
 
 const baseQuery = fetchBaseQuery({
   baseUrl: 'https://rickandmortyapi.com/api',
-})
+});
 
 export const rickMortyApi = createApi({
   reducerPath: 'rickMortyApi',
   baseQuery: baseQuery,
   tagTypes: [],
-  endpoints: build => {
-    return {
-      getCharacters: build.query<RickMortyDataType, number>({
-        query: (page: number) => {
-          return {
-            method: 'GET',
-            url: `character/?page=${page}`
-          }
-        }
+  endpoints: (build) => ({
+    getCharacters: build.query<CharacterAppType[], number>({
+      query: (page: number) => ({
+        method: 'GET',
+        url: `character/?page=${page}`,
       }),
-      getCharacter: build.query<CharacterType, number>({
-        query: (id: number) => {
-          return {
-            method: 'GET',
-            url: `character/${id}`
-          }
-        }
-      })
-    }
-  },
-})
+      transformResponse: (response: RickMortyDataType) =>
+        response.results.map(transformToCharacterAppType),
+    }),
+  }),
+});
 
-export const {
-  useGetCharactersQuery,
-  useGetCharacterQuery,
-} = rickMortyApi
+export const { useGetCharactersQuery } = rickMortyApi;

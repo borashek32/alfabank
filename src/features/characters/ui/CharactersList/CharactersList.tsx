@@ -1,25 +1,26 @@
-import { useEffect } from 'react';
-import { useGetCharactersQuery } from '../api/rickMorty.api';
+import { useEffect, useState } from 'react';
 import styles from './CharactersList.module.css';
-import { CharacterCard } from './characterCard/CharacterCard';
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
-import { setCharacters, removeCharacter, setFilter } from '../characters.slice';
 import { useAppSelector } from 'common/hooks/useAppSelector';
-import { selectCharacters, selectFilter } from '../characters.selector';
+import { selectCharacters, selectFilter } from 'features/Characters/characters.selectors';
+import { useGetCharactersQuery } from 'features/Characters/api/rickMorty.api';
+import { removeCharacter, setCharacters, setFilter } from 'features/Characters/characters.slice';
+import { CharacterCard } from '../CharacterCard/CharacterCard';
+import { AddCharacterForm } from '../AddCharacterForm/AddCharacterForm';
 
 export const CharactersList = () => {
-  console.log('render');
   const dispatch = useAppDispatch();
-  const characters = useAppSelector(selectCharacters); // Отображаемые персонажи
-  const filter = useAppSelector(selectFilter); // Текущий фильтр
+  const characters = useAppSelector(selectCharacters);
+  const filter = useAppSelector(selectFilter);
   const { data } = useGetCharactersQuery(1, {
-    skip: characters.length > 0, // Не делаем запрос, если данные уже есть
+    skip: characters.length > 0,
   });
 
-  // Инициализируем список персонажей только при первой загрузке данных
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   useEffect(() => {
     if (data) {
-      dispatch(setCharacters(data.results)); // Записываем данные из API только один раз
+      dispatch(setCharacters(data));
     }
   }, [data, dispatch]);
 
@@ -28,7 +29,11 @@ export const CharactersList = () => {
   };
 
   const handleFilterChange = (filter: 'all' | 'favourites') => {
-    dispatch(setFilter(filter)); // Устанавливаем фильтр
+    dispatch(setFilter(filter));
+  };
+
+  const handleModalToggle = () => {
+    setIsModalOpen((prev) => !prev);
   };
 
   return (
@@ -47,6 +52,9 @@ export const CharactersList = () => {
         >
           All Characters
         </button>
+        <button className={styles.button} onClick={handleModalToggle}>
+          Add New Character
+        </button>
       </div>
       <div className={styles.charactersWrapper}>
         {characters && characters.map(item => (
@@ -64,6 +72,18 @@ export const CharactersList = () => {
           />
         ))}
       </div>
+      {isModalOpen && (
+        <div className={styles.modalBackground}>
+          <div className={styles.modalContent}>
+            <button className={styles.closeButton} onClick={handleModalToggle}>
+              ×
+            </button>
+            <AddCharacterForm 
+              onClose={handleModalToggle}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 };

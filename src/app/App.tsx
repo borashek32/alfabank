@@ -1,9 +1,9 @@
 import { store } from '../common/providers/model/store';
-import { CharactersList } from '../features/characters/ui/CharactersList';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './../common/assets/styles/App.css';
 import { Provider } from 'react-redux';
-import { CharacterDetails } from 'features/characterDetails/CharacterDetails';
+import { CharacterDetails } from 'features/Characters/ui/CharacterDetails/CharacterDetails';
+import { CharactersList } from 'features/Characters/ui/CharactersList/CharactersList';
 
 function App() {
   return (

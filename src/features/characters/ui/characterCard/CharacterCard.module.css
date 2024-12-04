@@ -1,18 +1,23 @@
 .cardWrapper {
-  display: flex;
-  gap: 20px;
   width: 600px;
   height: 220px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px -1px, rgba(0, 0, 0, 0.06) 0px 2px 4px -1px;
   background-color: rgb(60, 62, 68);
   border-radius: 0.5rem;
   overflow: hidden;
+  position: relative;
+}
+
+.cardFlex {
+  display: flex;
+  gap: 20px;
   cursor: pointer;
+  text-decoration: none;
 }
 
 .cardImage {
-  width: 200px;
-  height: auto;
+  width: 220px;
+  height: 100%;
 }
 
 .desc {
@@ -44,9 +49,12 @@
 
 .iconsWrapper {
   display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
   height: 40px;
+  position: absolute;
+  right: 20px;
+  bottom: 10px;
 }
 
 .iconsWrapper img {
@@ -55,9 +63,16 @@
 
 @media screen and (max-width: 640px) {
   .cardWrapper {
-    width: 460px;
-    height: 300px;
+    width: auto;
+    height: auto;
+  }
+
+  .cardFlex {
     gap: 5px;
+  }
+  
+  .cardImage {
+    height: 280px;
   }
 
   .textWrapper {
@@ -74,25 +89,32 @@
   .descText {
     font-size: 14px;
   }
-
-  .iconsWrapper {
-    position: relative;
-    bottom: -20px;
-  }
 }
 
-@media screen and (max-width: 460px) {
+@media screen and (max-width: 500px) {
   .cardWrapper {
-    width: 200px;
-    height: 100%;
+    padding-bottom: 20px;
+  }
+
+  .cardImage {
+    width: 300px;
+  }
+
+  .cardFlex {
     flex-direction: column;
   }
 
   .iconsWrapper {
     position: static;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
   }
+}
 
-  .iconsWrapper img {
-    position: static;
+@media screen and (max-width: 400px) {
+  .cardImage {
+    width: 250px;
+    height: auto;
   }
 }

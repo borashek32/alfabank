@@ -1,0 +1,72 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.modalHeader {
+  margin: 0;
+}
+
+.inputWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  margin-top: 10px;
+}
+
+.inputWrapper.statusWrapper {
+  width: 100px;
+}
+
+.label {
+  font-weight: bold;
+  color: rgb(39, 43, 51);
+}
+
+input, textarea {
+  width: 100%;
+  padding: 4px 0px 4px 4px;
+  font-size: 14px;
+}
+
+.select {
+  height: 30px;
+  width: 100px;
+  border-radius: 4px;
+}
+
+.modalRequiredText {
+  margin-top: 20px;
+}
+
+.modalRequiredFields {
+  color: rgb(255, 0, 0);
+}
+
+.modalButton {
+  background-color: rgb(63, 65, 71);
+  color: rgb(223, 217, 217);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all .3s ease;
+}
+
+.modalButton:hover {
+  background-color: rgba(44, 46, 50);
+  color: rgb(254, 254, 254);
+}
+
+.error {
+  color: red;
+  font-size: 10px;
+  margin-top: 4px;
+  display: block;
+  position: absolute;
+  bottom: -12px;
+}

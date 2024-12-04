@@ -3,8 +3,8 @@ import likeLight from './../../../../common/assets/img/like-light.svg';
 import likeDark from './../../../../common/assets/img/like-dark.svg';
 import bin from './../../../../common/assets/img/bin.svg';
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
-import { CharacterAppType } from 'features/characters/characters.types';
-import { toggleLike } from 'features/characters/characters.slice';
+import { CharacterAppType } from 'features/Characters/characters.types';
+import { toggleLike } from 'features/Characters/characters.slice';
 import { NavLink } from 'react-router-dom';
 
 type Props = Pick<CharacterAppType, "id" | "name" | "image" | "location" | "status" | "species" | "likes" | "description"> & {
@@ -24,24 +24,22 @@ export const CharacterCard = ({
  }: Props) => {
   const dispatch = useAppDispatch();
 
-  const removeCharacterHandler = (event: React.MouseEvent) => {
+  const removeCharacterHandler = () => {
     removeCharacter(id);
   }
 
-  const toggleLikeHandler = (event: React.MouseEvent) => {
+  const toggleLikeHandler = () => {
     dispatch(toggleLike(id));
   }
 
   return (
     <div className={styles.cardWrapper}>
-      <NavLink to={`/character/${id}`}>
+      <NavLink to={`/character/${id}`} className={styles.cardFlex}>
         <img
           src={image}
           className={styles.cardImage}
           alt="Character"
         />
-      </NavLink>
-      {name && 
         <div className={styles.desc}>
           {name && 
             <div className={styles.textWrapper}>
@@ -77,15 +75,15 @@ export const CharacterCard = ({
               <p className={styles.descText}>{description.substring(0, 15)}...</p>
             </div>
           }
-          <div className={styles.iconsWrapper}>
-            <img src={bin} alt="bin" onClick={removeCharacterHandler} />
-            {likes
-              ? <img src={likeDark} alt='like' onClick={toggleLikeHandler} />
-              : <img src={likeLight} alt='like' onClick={toggleLikeHandler} />
-            }
-          </div>
         </div>
-      }
+      </NavLink>
+      <div className={styles.iconsWrapper}>
+        <img src={bin} alt="bin" onClick={removeCharacterHandler} />
+        {likes
+          ? <img src={likeDark} alt='like' onClick={toggleLikeHandler} />
+          : <img src={likeLight} alt='like' onClick={toggleLikeHandler} />
+        }
+      </div>
     </div>
   )
 }
