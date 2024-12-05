@@ -4,7 +4,7 @@ import { CharacterAppType } from '../characters.types';
 import { RickMortyDataType } from 'features/Characters/api/rickMorty.types';
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://rickandmortyapi.com/api',
+  baseUrl: process.env.REACT_APP_BASE_URL,
 });
 
 export const rickMortyApi = createApi({

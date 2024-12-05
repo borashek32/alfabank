@@ -1,0 +1,29 @@
+.paginationWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 20px;
+  height: 100px;
+  background-color: rgb(254, 254, 254);
+  margin-top: auto;
+}
+
+.paginationButton {
+  border: none;
+  border-radius: 5px;
+  padding: 10px 20px;
+  background-color: rgb(60, 62, 68);
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.paginationButton:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background-color: rgb(45, 46, 50);
+}

@@ -9,6 +9,7 @@ export const transformToCharacterAppType = (character: CharacterType): Character
   location: character.location,
   status: character.status,
   species: character.species,
+  gender: character.gender,
   likes: 0,
   description: generateRandomDescription(),
 });

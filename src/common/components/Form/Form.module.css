@@ -1,0 +1,33 @@
+.modalHeader {
+  text-align: center;
+}
+
+.modalButtonWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.modalButton {
+  background-color: rgb(63, 65, 71);
+  color: rgb(223, 217, 217);
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+  font-weight: 700;
+  font-size: 16px;
+  transition: all .3s ease;
+}
+
+.modalButton:hover {
+  background-color: rgba(44, 46, 50);
+  color: rgb(254, 254, 254);
+}
+
+.modalRequiredText {
+  margin: 20px 0;
+}
+
+.modalRequiredFields {
+  color: rgb(255, 0, 0);
+}

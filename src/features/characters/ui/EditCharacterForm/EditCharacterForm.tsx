@@ -1,14 +1,25 @@
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
-import { addCharacter } from 'features/Characters/characters.slice';
+import { updateCharacter } from 'features/Characters/characters.slice';
 import { InputGroup } from 'common/components/InputGroup/InputGroup';
 import { Form } from 'common/components/Form/Form';
 import { GenderFilterType, SpeciesFilterType, StatusFilterType } from 'features/Characters/characters.types';
 import { genderOptions, speciesOptions, statusOptions } from 'common/constants/constants';
 
 type Props = {
+  id: number
+  image?: string
+  name: string
+  location: {
+    name: string
+    url?: string
+  }
+  status: StatusFilterType
+  species: SpeciesFilterType
+  gender: GenderFilterType
+  description: string
   onClose: () => void
-}
+};
 
 type FormValues = {
   name: string
@@ -21,13 +32,33 @@ type FormValues = {
   description: string
 };
 
-export const AddCharacterForm = ({ onClose }: Props) => {
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>();
+export const EditCharacterForm = ({
+  id,
+  image,
+  name,
+  location,
+  status,
+  species,
+  description,
+  onClose,
+}: Props) => {
+  const { register, handleSubmit, reset, formState: { errors } } = useForm<FormValues>({
+    defaultValues: {
+      name: name,
+      status: status,
+      species: species,
+      locationName: location.name,
+      locationUrl: location.url,
+      image: image,
+      description: description,
+    },
+  });
+  
   const dispatch = useAppDispatch();
 
   const onSubmit: SubmitHandler<FormValues> = (data) => {
-    const newCharacter = {
-      id: Date.now(),
+    const updatedCharacter = {
+      id: id,
       name: data.name,
       status: data.status,
       species: data.species,
@@ -37,20 +68,19 @@ export const AddCharacterForm = ({ onClose }: Props) => {
         url: data.locationUrl,
       },
       image: data.image,
-      likes: 0,
       description: data.description,
     };
 
-    dispatch(addCharacter(newCharacter));
+    dispatch(updateCharacter(updatedCharacter));
     reset();
     onClose();
   };
 
   return (
-    <Form
-      formTitle="Add Character Form" 
+    <Form 
+      formTitle="Edit Character Form" 
       onSubmit={handleSubmit(onSubmit)} 
-      buttonTitle="Add Character"
+      buttonTitle="Update Character"
     >
       <InputGroup
         label="Status"
@@ -69,13 +99,13 @@ export const AddCharacterForm = ({ onClose }: Props) => {
         required
       />
       <InputGroup
-       label="Species"
-       type="select"
-       register={register('species', { required: 'This field is required' })}
-       error={errors.species?.message}
-       options={speciesOptions}
-       required
-     />
+        label="Species"
+        type="select"
+        register={register('species', { required: 'This field is required' })}
+        error={errors.species?.message}
+        options={speciesOptions}
+        required
+      />
       <InputGroup
         label="Name"
         type="text"
@@ -98,8 +128,9 @@ export const AddCharacterForm = ({ onClose }: Props) => {
       <InputGroup
         label="Image URL"
         type="text"
-        register={register('image')}
+        register={register('image', { required: 'This field is required' })}
         error={errors.image?.message}
+        required
       />
       <InputGroup
         label="Description"
