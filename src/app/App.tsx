@@ -9,7 +9,7 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<CharactersList />} />
+          <Route path="/alfabank" element={<CharactersList />} />
           <Route path="/character/:id" element={<CharacterDetails />} />
         </Routes>
       </Router>
