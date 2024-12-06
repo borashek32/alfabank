@@ -10,9 +10,9 @@ function App() {
     <Provider store={store}>
       <Router>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/characters" element={<CharactersList />} />
-          <Route path="/character/:id" element={<CharacterDetails />} />
+          <Route path="/alfabank" element={<Home />} />
+          <Route path="/alfabank/characters" element={<CharactersList />} />
+          <Route path="/alfabank/character/:id" element={<CharacterDetails />} />
         </Routes>
       </Router>
     </Provider>
