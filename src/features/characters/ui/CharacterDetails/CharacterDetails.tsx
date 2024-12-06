@@ -5,6 +5,7 @@ import { selectCharacterById } from 'features/Characters/characters.selectors';
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
 import { useAppSelector } from 'common/hooks/useAppSelector';
 import styles from './CharacterDetails.module.css';
+import { PATHS } from 'common/constants/paths';
 
 export const CharacterDetails = () => {
   const dispatch = useAppDispatch();
@@ -20,7 +21,7 @@ export const CharacterDetails = () => {
   
   return (
     <div className={styles.characterWrapper}>
-      <NavLink to={'/'}>
+      <NavLink to={PATHS.CHARACTERS_LIST}>
         <button className={styles.backButton}>
           ← Back to Characters
         </button>

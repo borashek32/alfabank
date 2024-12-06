@@ -10,6 +10,7 @@ import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { EditCharacterForm } from '../EditCharacterForm/EditCharacterForm';
 import { CharacterFeature } from '../CharacterFeature/CharacterFeature';
+import { PATHS } from 'common/constants/paths';
 
 type Props = Pick<CharacterAppType, "id" | "name" | "image" | "location" | "status" | "species" | "likes" | "description" | "gender"> & {
   removeCharacter: (id: number) => void
@@ -46,7 +47,7 @@ export const CharacterCard = ({
   return (
     <>
       <div className={styles.cardWrapper}>
-        <NavLink to={`/character/${id}`} className={styles.cardFlex}>
+        <NavLink to={`${PATHS.CHARACTERS_LIST}/${id}`} className={styles.cardFlex}>
           {image 
             ? <img
                 src={image}
